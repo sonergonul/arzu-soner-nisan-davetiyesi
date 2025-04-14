@@ -44,4 +44,4 @@ Ana renk şemasını değiştirmek için `styles.css` dosyasında `#d48a9b` reng
 
 ## Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır.
+Yok lisans falan
