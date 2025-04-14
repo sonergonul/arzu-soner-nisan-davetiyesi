@@ -1,71 +1,4 @@
-// Belirli aralıklarla yeni balonlar oluştur
-function startBalloons() {
-    // İlk balonları hemen oluştur
-    for (let i = 0; i < 8; i++) {
-        setTimeout(() => createBalloon(), i * 300);
-    }
-    
-    // Sürekli olarak yeni balonlar oluştur
-    setInterval(() => {
-        const balloonCount = Math.floor(Math.random() * 2) + 1; // 1-2 balon
-        for (let i = 0; i < balloonCount; i++) {
-            setTimeout(() => createBalloon(), i * 200);
-        }
-    }, 1200); // Her 1.2 saniyede yeni balonlar
-}
-
-// GERİ SAYIM SAYACI İÇİN KOD
-// Hedef tarih: 3 Mayıs 2025, saat 20:00 (Türkiye saati)
-const countDownDate = new Date("May 3, 2025 20:00:00 GMT+0300").getTime();
-
-// Her saniyede bir geri sayımı güncelle
-const countdownTimer = setInterval(function() {
-    // Şimdiki tarih/saat bilgisini al
-    const now = new Date().getTime();
-    
-    // Hedef tarih ile şimdi arasındaki farkı hesapla
-    const distance = countDownDate - now;
-    
-    // Gün, saat, dakika ve saniye hesaplamaları
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-    // Sayıları iki basamaklı göster (01, 02, vs.)
-    document.getElementById("days").innerText = days.toString().padStart(2, '0');
-    document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-    document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-    document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
-    
-    // Eğer geri sayım biterse
-    if (distance < 0) {
-        clearInterval(countdownTimer);
-        document.getElementById("days").innerText = "00";
-        document.getElementById("hours").innerText = "00";
-        document.getElementById("minutes").innerText = "00";
-        document.getElementById("seconds").innerText = "00";
-        
-        // Alternatif mesaj göster
-        document.querySelector(".countdown-title").innerText = "Nişanımız Başladı!";
-    }
-}, 1000);
-
-// Ekran boyutu değiştiğinde balonları yeniden düzenle
-window.addEventListener('resize', function() {
-    // Mevcut balonları temizle
-    const balloons = document.querySelectorAll('.balloon');
-    balloons.forEach(balloon => {
-        if (document.querySelector('.main-section').contains(balloon)) {
-            document.querySelector('.main-section').removeChild(balloon);
-        }
-    });
-    
-    // Yeni balonlar oluştur
-    for (let i = 0; i < 8; i++) {
-        setTimeout(() => createBalloon(), i * 200);
-    }
-});// Sayfa içi kaydırma fonksiyonu
+// Sayfa içi kaydırma fonksiyonu
 function scrollToSection(sectionId) {
     document.querySelector(sectionId).scrollIntoView({ 
         behavior: 'smooth' 
@@ -101,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return date.toISOString().replace(/-|:|\.\d+/g, '');
     };
     
-    // Google Calendar
+    // Google Calendar - Güncellendi ve daha güvenilir hale getirildi
     const googleCalendarLink = document.getElementById('google-calendar');
-    const googleUrl = new URL('https://calendar.google.com/calendar/render');
+    const googleUrl = new URL('https://www.google.com/calendar/render');
     googleUrl.searchParams.append('action', 'TEMPLATE');
     googleUrl.searchParams.append('text', eventTitle);
     googleUrl.searchParams.append('dates', `${formatDate(startDate)}/${formatDate(endDate)}`);
@@ -113,7 +46,13 @@ document.addEventListener('DOMContentLoaded', function() {
     googleUrl.searchParams.append('output', 'xml');
     googleCalendarLink.href = googleUrl.toString();
     
-    // Outlook Calendar
+    googleCalendarLink.addEventListener('click', function(e) {
+        // Yeni sekmede aç
+        window.open(this.href, '_blank');
+        e.preventDefault();
+    });
+    
+    // Outlook Calendar - Güncellendi ve daha güvenilir hale getirildi
     const outlookCalendarLink = document.getElementById('outlook-calendar');
     const outlookUrl = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
     outlookUrl.searchParams.append('subject', eventTitle);
@@ -125,7 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
     outlookUrl.searchParams.append('rru', 'addevent');
     outlookCalendarLink.href = outlookUrl.toString();
     
-    // Apple Calendar (iCalendar formatı) - İndirilebilir ICS dosyası için
+    outlookCalendarLink.addEventListener('click', function(e) {
+        // Yeni sekmede aç
+        window.open(this.href, '_blank');
+        e.preventDefault();
+    });
+    
+    // Apple Calendar - iOS için tamamen yeniden yapılandırıldı
     const appleCalendarLink = document.getElementById('apple-calendar');
     
     // iCalendar formatında veri oluşturma
@@ -151,10 +96,104 @@ document.addEventListener('DOMContentLoaded', function() {
         'END:VCALENDAR'
     ].join('\r\n');
     
-    // Apple Calendar - Data URL kullanarak ICS dosyasını oluştur
-    const appleUrl = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-    appleCalendarLink.href = appleUrl;
-    appleCalendarLink.setAttribute('download', 'arzu-soner-nisan-toreni.ics');
+    // iOS için özel işlem - Click handler kullan
+    appleCalendarLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // iOS/Safari algılama
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (isIOS) {
+            // iOS için 1: Doğrudan ICS içeriğini açmayı dene
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            // Pencere açmayı dene
+            const opened = window.open('webcal://' + window.location.hostname + url.substring(url.lastIndexOf('/')));
+            
+            // Eğer açmadıysa, kullanıcıya talimatlar göster
+            if (!opened) {
+                showAppleCalendarInstructions();
+            }
+        } else {
+            // iOS olmayan cihazlar için normal indirme
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            const tempLink = document.createElement('a');
+            tempLink.href = url;
+            tempLink.setAttribute('download', 'arzu-soner-nisan-toreni.ics');
+            tempLink.click();
+            
+            // URL'i temizle
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        }
+    });
+    
+    // iOS için yardımcı popup fonksiyonu
+    function showAppleCalendarInstructions() {
+        // Modal oluştur
+        const modalOverlay = document.createElement('div');
+        modalOverlay.style.position = 'fixed';
+        modalOverlay.style.top = '0';
+        modalOverlay.style.left = '0';
+        modalOverlay.style.width = '100%';
+        modalOverlay.style.height = '100%';
+        modalOverlay.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        modalOverlay.style.zIndex = '1000';
+        modalOverlay.style.display = 'flex';
+        modalOverlay.style.justifyContent = 'center';
+        modalOverlay.style.alignItems = 'center';
+        
+        const modalContent = document.createElement('div');
+        modalContent.style.backgroundColor = 'white';
+        modalContent.style.borderRadius = '15px';
+        modalContent.style.padding = '20px';
+        modalContent.style.width = '80%';
+        modalContent.style.maxWidth = '400px';
+        modalContent.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+        
+        modalContent.innerHTML = `
+            <h3 style="color: #d48a9b; font-size: 1.5rem; margin-bottom: 15px; text-align: center;">iPhone Takvim Ekleme</h3>
+            <p style="margin-bottom: 10px;">Apple Takvim'e eklemek için:</p>
+            <ol style="margin-left: 20px; margin-bottom: 20px;">
+                <li style="margin-bottom: 8px;">Aşağıdaki butona tıklayın ve ICS dosyasını indirin</li>
+                <li style="margin-bottom: 8px;">Mail uygulamasını açın ve dosyayı kendinize gönderin</li>
+                <li style="margin-bottom: 8px;">Maildeki eke tıklayın ve "Takvime Ekle"yi seçin</li>
+            </ol>
+            <div style="display: flex; justify-content: space-between;">
+                <button id="downloadICS" style="background-color: #d48a9b; color: white; border: none; padding: 10px 15px; border-radius: 25px; font-weight: bold; cursor: pointer;">ICS Dosyasını İndir</button>
+                <button id="closeModal" style="background-color: #666; color: white; border: none; padding: 10px 15px; border-radius: 25px; font-weight: bold; cursor: pointer;">Kapat</button>
+            </div>
+        `;
+        
+        modalOverlay.appendChild(modalContent);
+        document.body.appendChild(modalOverlay);
+        
+        // Butonlar için event listener'lar
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.body.removeChild(modalOverlay);
+        });
+        
+        document.getElementById('downloadICS').addEventListener('click', function() {
+            // ICS dosyasını indir
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            const tempLink = document.createElement('a');
+            tempLink.href = url;
+            tempLink.setAttribute('download', 'arzu-soner-nisan-toreni.ics');
+            tempLink.click();
+            
+            // URL'i temizle
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        });
+    }
     
     // Balonları başlat
     startBalloons();
@@ -281,7 +320,7 @@ function popBalloon(balloon) {
 // Konfeti oluşturma fonksiyonu
 function createConfetti(position) {
     const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#1A535C', '#FF9A8B', '#D4F0F0'];
-    const confettiCount = 20; // Oluşturulacak konfeti sayısı
+    const confettiCount = 30; // Oluşturulacak konfeti sayısı
     
     for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
@@ -332,3 +371,72 @@ function createConfetti(position) {
         }, animDuration * 1000 + 200);
     }
 }
+
+// Belirli aralıklarla yeni balonlar oluştur
+function startBalloons() {
+    // İlk balonları hemen oluştur
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => createBalloon(), i * 300);
+    }
+    
+    // Sürekli olarak yeni balonlar oluştur
+    setInterval(() => {
+        const balloonCount = Math.floor(Math.random() * 2) + 1; // 1-2 balon
+        for (let i = 0; i < balloonCount; i++) {
+            setTimeout(() => createBalloon(), i * 200);
+        }
+    }, 1200); // Her 1.2 saniyede yeni balonlar
+}
+
+// GERİ SAYIM SAYACI İÇİN KOD
+// Hedef tarih: 3 Mayıs 2025, saat 20:00 (Türkiye saati)
+const countDownDate = new Date("May 3, 2025 20:00:00 GMT+0300").getTime();
+
+// Her saniyede bir geri sayımı güncelle
+const countdownTimer = setInterval(function() {
+    // Şimdiki tarih/saat bilgisini al
+    const now = new Date().getTime();
+    
+    // Hedef tarih ile şimdi arasındaki farkı hesapla
+    const distance = countDownDate - now;
+    
+    // Gün, saat, dakika ve saniye hesaplamaları
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    // Sayıları iki basamaklı göster (01, 02, vs.)
+    document.getElementById("days").innerText = days.toString().padStart(2, '0');
+    document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+    document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+    document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+    
+    // Eğer geri sayım biterse
+    if (distance < 0) {
+        clearInterval(countdownTimer);
+        document.getElementById("days").innerText = "00";
+        document.getElementById("hours").innerText = "00";
+        document.getElementById("minutes").innerText = "00";
+        document.getElementById("seconds").innerText = "00";
+        
+        // Alternatif mesaj göster
+        document.querySelector(".countdown-title").innerText = "Nişanımız Başladı!";
+    }
+}, 1000);
+
+// Ekran boyutu değiştiğinde balonları yeniden düzenle
+window.addEventListener('resize', function() {
+    // Mevcut balonları temizle
+    const balloons = document.querySelectorAll('.balloon');
+    balloons.forEach(balloon => {
+        if (document.querySelector('.main-section').contains(balloon)) {
+            document.querySelector('.main-section').removeChild(balloon);
+        }
+    });
+    
+    // Yeni balonlar oluştur
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => createBalloon(), i * 200);
+    }
+});
