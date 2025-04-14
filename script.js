@@ -105,17 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         
         if (isIOS) {
-            // iOS için 1: Doğrudan ICS içeriğini açmayı dene
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            
-            // Pencere açmayı dene
-            const opened = window.open('webcal://' + window.location.hostname + url.substring(url.lastIndexOf('/')));
-            
-            // Eğer açmadıysa, kullanıcıya talimatlar göster
-            if (!opened) {
-                showAppleCalendarInstructions();
-            }
+            // iOS için direkt olarak Takvim uygulamasını aç
+            window.location.href = 'calshow://';
         } else {
             // iOS olmayan cihazlar için normal indirme
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
