@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nişan Davetiyesi - Arzu & Soner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- İlk Bölüm - Ana başlık ve balonlar -->
+    <section class="main-section" id="section1">
+        <div class="main-container">
+            <h1 class="title">Nişanlanıyoruz</h1>
+            <p class="subtitle">Birlikte atacağımız bu ilk adımda, sizleri de aramızda görmek isteriz</p>
+        </div>
+        
+        <div class="scroll-arrow" onclick="scrollToSection('#section2')">
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+    
+    <!-- İkinci Bölüm - Geri Sayım Sayacı -->
+    <section class="countdown-section" id="section2">
+        <h2 class="countdown-title">Kalan Süre</h2>
+        
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <div id="days" class="countdown-number">00</div>
+                <span class="countdown-label">Gün</span>
+            </div>
+            
+            <div class="countdown-item">
+                <div id="hours" class="countdown-number">00</div>
+                <span class="countdown-label">Saat</span>
+            </div>
+            
+            <div class="countdown-item">
+                <div id="minutes" class="countdown-number">00</div>
+                <span class="countdown-label">Dakika</span>
+            </div>
+            
+            <div class="countdown-item">
+                <div id="seconds" class="countdown-number">00</div>
+                <span class="countdown-label">Saniye</span>
+            </div>
+        </div>
+        
+        <div class="scroll-arrow" onclick="scrollToSection('#section3')">
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+    
+    <!-- Üçüncü Bölüm - Nişan Yeri ve Adres -->
+    <section class="location-section" id="section3">
+        <h2 class="location-title">Nişan Yerimiz</h2>
+        
+        <div class="location-card">
+            <div class="map-pin"></div>
+            <h3 class="venue-name">Ünüvar Music Lounge & Restaurant</h3>
+            
+            <div class="venue-details">
+                <p>Nişan törenimize katılmanızdan mutluluk duyarız.</p>
+                <p>Tarih: <strong>3 Mayıs 2025, Cumartesi</strong></p>
+                <p>Saat: <strong>20:00</strong></p>
+            </div>
+            
+            <a href="https://maps.app.goo.gl/XBRLzjgkRJnrd2JAA" target="_blank" class="btn-directions">
+                <span class="directions-icon"></span> Yol Tarifi
+            </a>
+        </div>
+        
+        <div class="scroll-arrow" onclick="scrollToSection('#section4')">
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+    
+    <!-- Dördüncü Bölüm - Takvim Entegrasyonu -->
+    <section class="calendar-section" id="section4">
+        <h2 class="calendar-title">Takvime Ekleyin</h2>
+        
+        <div class="calendar-card">
+            <p class="calendar-text">Nişan günümüzü takviminize ekleyerek bu özel günü kaçırmayın.</p>
+            
+            <div class="calendar-buttons">
+                <a href="#" id="google-calendar" class="calendar-btn" target="_blank">
+                    <span class="calendar-icon">📅</span> Google Calendar
+                </a>
+                
+                <a href="#" id="outlook-calendar" class="calendar-btn" target="_blank">
+                    <span class="calendar-icon">📆</span> Outlook Calendar
+                </a>
+                
+                <a href="#" id="apple-calendar" class="calendar-btn" target="_blank">
+                    <span class="calendar-icon">🗓️</span> Apple Calendar
+                </a>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center;">
+                <p style="font-size: 1.3rem; color: #d48a9b; margin-bottom: 10px;">Sizinle birlikte kutlamayı sabırsızlıkla bekliyoruz!</p>
+                <p style="font-size: 1.2rem; font-style: italic; color: #666;">Sevgiler, Arzu & Soner</p>
+            </div>
+        </div>
+        
+        <a href="#section1" class="back-to-top" onclick="scrollToSection('#section1'); return false;">
+            <div class="back-to-top-button">
+                <div class="arrow-up"></div>
+                <span>En Başa Dön</span>
+            </div>
+        </a>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
