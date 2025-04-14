@@ -6,9 +6,9 @@ Bu proje, Arzu ve Soner çiftinin nişan davetiyesi için interaktif bir web say
 
 - Uçuşan ve tıklandığında patlayan renkli balonlar
 - Nişan gününe kadar geri sayım sayacı
-- Nişan yeri ve konum bilgileri
+- Nişan yeri, adresi ve Google Maps üzerinden konum bilgileri
 - Google, Outlook ve Apple takvimleri için hızlı entegrasyon butonları
-- Tamamen mobil uyumlu tasarım
+- Tamamen (umarım) mobil uyumlu responsive design
 
 ## Dosyalar
 
@@ -21,7 +21,7 @@ Proje üç ana dosyadan oluşmaktadır:
 ## Kurulum
 
 1. Bu repoyu GitHub'dan klonlayın veya ZIP olarak indirin
-2. Dosyaları herhangi bir web sunucusuna yükleyin
+2. İhtiyacınız varsa bir web sunucusuna yükleyin
 3. Tarayıcınızdan `index.html` dosyasını açın
 
 ## Özelleştirme
@@ -40,7 +40,7 @@ Ana renk şemasını değiştirmek için `styles.css` dosyasında `#d48a9b` reng
 
 ## Katkıda Bulunanlar
 
-- Arzu & Soner
+- Arzu ve Soner
 
 ## Lisans
 
