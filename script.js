@@ -1,8 +1,16 @@
 // Sayfa içi kaydırma fonksiyonu
 function scrollToSection(sectionId) {
-    document.querySelector(sectionId).scrollIntoView({ 
-        behavior: 'smooth' 
-    });
+    if (!sectionId || typeof sectionId !== 'string' || !sectionId.startsWith('#')) {
+        console.error('Invalid section ID');
+        return;
+    }
+    
+    const target = document.querySelector(sectionId);
+    if (target) {
+        target.scrollIntoView({ 
+            behavior: 'smooth' 
+        });
+    }
 }
 
 // Sayfa yüklendiğinde tüm anchor bağlantılarını düzenle
